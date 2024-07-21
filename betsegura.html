@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BETSEGURA v1.0</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            padding: 10px;
+        }
+
+        .input-group {
+            margin: 10px 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group label {
+            margin-bottom: 5px;
+        }
+
+        .input-group input {
+            padding: 5px;
+            font-size: 16px;
+        }
+
+        .pink-field {
+            background-color: pink;
+        }
+
+        .blue-field {
+            background-color: lightblue;
+        }
+
+        .highlight-pink {
+            color: pink;
+        }
+
+        .highlight-blue {
+            color: blue;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        table, th, td {
+            border: 1px solid black;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        @media (max-width: 768px) {
+            th, td {
+                padding: 5px;
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            th, td {
+                padding: 3px;
+                font-size: 12px;
+            }
+
+            .input-group {
+                margin: 5px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Simulação de Apostas BET365 com Proteção na BETBRA</h1>
+
+        <div class="input-group">
+            <label for="oddMenorPartida">Odd Menor Partida:</label>
+            <input type="number" id="oddMenorPartida" step="0.01">
+        </div>
+
+        <div class="input-group">
+            <label for="oddMaiorPartida">Odd Maior Partida:</label>
+            <input type="number" id="oddMaiorPartida" step="0.01">
+        </div>
+
+        <div class="input-group">
+            <label for="oddMenorPT">Odd Menor Primeiro Tempo:</label>
+            <input type="number" id="oddMenorPT" step="0.01">
+        </div>
+
+        <div class="input-group">
+            <label for="oddMaiorPT">Odd Maior Primeiro Tempo:</label>
+            <input type="number" id="oddMaiorPT" step="0.01">
+        </div>
+
+        <div class="input-group">
+            <label for="oddMenorST">Odd Menor Segundo Tempo:</label>
+            <input type="number" id="oddMenorST" step="0.01">
+        </div>
+
+        <div class="input-group">
+            <label for="oddMaiorST">Odd Maior Segundo Tempo:</label>
+            <input type="number" id="oddMaiorST" step="0.01">
+        </div>
+
+        <div class="input-group">
+            <label for="oddLay" class="pink-field">Odd Lay:</label>
+            <input type="number" id="oddLay" class="pink-field" step="0.01">
+        </div>
+
+        <div class="input-group">
+            <label for="oddBack" class="blue-field">Odd Back:</label>
+            <input type="number" id="oddBack" class="blue-field" step="0.01">
+        </div>
+
+        <button onclick="calcularValores()">Calcular</button>
+
+        <div id="resultado"></div>
+
+        <p>Desenvolvido e comercializado por BETSEGURA</p>
+        <p>Versão 1.0</p>
+    </div>
+
+    <script>
+        const maximoAposta = 280.00;
+
+        function calcularValores() {
+            const oddMenorPartida = parseFloat(document.getElementById('oddMenorPartida').value);
+            const oddMaiorPartida = parseFloat(document.getElementById('oddMaiorPartida').value);
+            const oddMenorPT = parseFloat(document.getElementById('oddMenorPT').value);
+            const oddMaiorPT = parseFloat(document.getElementById('oddMaiorPT').value);
+            const oddMenorST = parseFloat(document.getElementById('oddMenorST').value);
+            const oddMaiorST = parseFloat(document.getElementById('oddMaiorST').value);
+            const oddLay = parseFloat(document.getElementById('oddLay').value);
+            const oddBack = parseFloat(document.getElementById('oddBack').value);
+
+            const lucroPartida = maximoAposta * (oddMenorPartida - 1);
+            const lucroPT = maximoAposta * (oddMenorPT - 1);
+            const lucroST = maximoAposta * (oddMenorST - 1);
+
+            const premioTotalPartida = maximoAposta * oddMenorPartida + 0.25 * lucroPartida;
+            const premioTotalPT = maximoAposta * oddMenorPT + 0.25 * lucroPT;
+            const premioTotalST = maximoAposta * oddMenorST + 0.25 * lucroST;
+
+            const valorOddMaiorPartida = premioTotalPartida / (1.25 * oddMaiorPartida - 0.25);
+            const valorOddMaiorPT = premioTotalPT / (1.25 * oddMaiorPT - 0.25);
+            const valorOddMaiorST = premioTotalST / (1.25 * oddMaiorST - 0.25);
+
+            const stakeLayPartida = premioTotalPartida / oddLay;
+            const stakeLayPT = premioTotalPT / oddLay;
+            const stakeLayST = premioTotalST / oddLay;
+
+            const stakeBackPartida = premioTotalPartida / oddBack;
+            const stakeBackPT = premioTotalPT / oddBack;
+            const stakeBackST = premioTotalST / oddBack;
+
+            const valorOddLayPartida = premioTotalPartida - stakeLayPartida;
+            const valorOddLayPT = premioTotalPT - stakeLayPT;
+            const valorOddLayST = premioTotalST - stakeLayST;
+
+            const apostaTotalLayPartida = maximoAposta + valorOddMaiorPartida + valorOddLayPartida;
+            const apostaTotalLayPT = maximoAposta + valorOddMaiorPT + valorOddLayPT;
+            const apostaTotalLayST = maximoAposta + valorOddMaiorST + valorOddLayST;
+
+            const apostaTotalBackPartida = maximoAposta + valorOddMaiorPartida + stakeBackPartida;
+            const apostaTotalBackPT = maximoAposta + valorOddMaiorPT + stakeBackPT;
+            const apostaTotalBackST = maximoAposta + valorOddMaiorST + stakeBackST;
+
+            const resultLayPartida = premioTotalPartida - apostaTotalLayPartida;
+            const resultLayPT = premioTotalPT - apostaTotalLayPT;
+            const resultLayST = premioTotalST - apostaTotalLayST;
+
+            const resultBackPartida = premioTotalPartida - apostaTotalBackPartida;
+            const resultBackPT = premioTotalPT - apostaTotalBackPT;
+            const resultBackST = premioTotalST - apostaTotalBackST;
+
+            document.getElementById('resultado').innerHTML = `
+                <p>GOLS +0 TIME 01 (BET365) / GOLS +0 TIME 2 (BET365)/ <span class="highlight-pink">LAY AMBAS MARCAM SIM (BETBRA)</span> <strong>NA PARTIDA</strong></p>
+                <table>
+                    <tr>
+                        <th>Valor da Aposta</th>
+                        <th>ODD</th>
+                        <th>Valor do Prêmio</th>
+                        <th>Plataforma</th>
+                        <th>Lucro/Prejuízo</th>
+                    </tr>
+                    <tr>
+                        <td>R$ ${maximoAposta.toFixed(2)}</td>
+                        <td>${oddMenorPartida.toFixed(2)}</td>
+                        <td>R$ ${premioTotalPartida.toFixed(2)}</td>
+                        <td>BET365</td>
+                        <td rowspan="3">R$ ${resultLayPartida.toFixed(2)}</td>
+                    </tr>
+                    <tr>
+                        <td>R$ ${valorOddMaiorPartida.toFixed(2)}</td>
+                        <td>${oddMaiorPartida.toFixed(2)}</td>
+                        <td>R$ ${premioTotalPartida.toFixed(2)}</td>
+                        <td>BET365</td>
+                    </tr>
+                    <tr>
+                        <td>R$ ${stakeLayPartida.toFixed(2)}</td>
+                        <td>${oddLay.toFixed(2)}</td>
+                        <td>R$ ${premioTotalPartida.toFixed(2)}</td>
+                        <td>BETBRA</td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">Saldo necessário na BetBra = R$ ${valorOddLayPartida.toFixed(2)}</td>
+                    </tr>
+                </table>
+                <br>
+                <p>GOLS +0 TIME 01 (BET365) / GOLS +0 TIME 2 (BET365)/ <span class="highlight-blue">BACK AMBAS MARCAM NÃO (BETBRA)</span> <strong>NA PARTIDA</strong></p>
+                <table>
+                    <tr>
+                        <th>Valor da Aposta</th>
+                        <th>ODD</th>
+                        <th>Valor do Prêmio</th>
+                        <th>Plataforma</th>
+                        <th>Lucro/Prejuízo</th>
+                    </tr>
+                    <tr>
+                        <td>R$ ${maximoAposta.toFixed(2)}</td>
+                        <td>${oddMenorPartida.toFixed(2)}</td>
+                        <td>R$ ${premioTotalPartida.toFixed(2)}</td>
+                        <td>BET365</td>
+                        <td rowspan="3">R$ ${resultBackPartida.toFixed(2)}</td>
+                    </tr>
+                    <tr>
+                        <td>R$ ${valorOddMaiorPartida.toFixed(2)}</td>
+                        <td>${oddMaiorPartida.toFixed(2)}</td>
+                        <td>R$ ${premioTotalPartida.toFixed(2)}</td>
+                        <td>BET365</td>
+                    </tr>
+                    <tr>
+                        <td>R$ ${stakeBackPartida.toFixed(2)}</td>
+                        <td>${oddBack.toFixed(2)}</td>
+                        <td>R$ ${premioTotalPartida.toFixed(2)}</td>
+                        <td>BETBRA</td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">Saldo necessário na BetBra = R$ ${stakeBackPartida.toFixed(2)}</td>
+                    </tr>
+                </table>
+                <br>
+                <p>GOLS +0 TIME 01 (BET365) / GOLS +0 TIME 2 (BET365)/ <span class="highlight-pink">LAY AMBAS MARCAM SIM (BETBRA)</span> <strong>1º TEMPO</strong></p>
+                <table>
+                    <tr>
+                        <th>Valor da Aposta</th>
+                        <th>ODD</th>
+                        <th>Valor do Prêmio</th>
+                        <th>Plataforma</th>
+                        <th>Lucro/Prejuízo</th>
+                    </tr>
+                    <tr>
+                        <td>R$ ${maximoAposta.toFixed(2)}</td>
+                        <td>${oddMenorPT.toFixed(2)}</td>
+                        <td>R$ ${premioTotalPT.toFixed(2)}</td>
+                        <td>BET365</td>
+                        <td rowspan="3">R$ ${resultLayPT.toFixed(2)}</td>
+                    </tr>
+                    <tr>
+                        <td>R$ ${valorOddMaiorPT.toFixed(2)}</td>
+                        <td>${oddMaiorPT.toFixed(2)}</td>
+                        <td>R$ ${premioTotalPT.toFixed(2)}</td>
+                        <td>BET365</td>
+                    </tr>
+                    <tr>
+                        <td>R$ ${stakeLayPT.toFixed(2)}</td>
+                        <td>${oddLay.toFixed(2)}</td>
+                        <td>R$ ${premioTotalPT.toFixed(2)}</td>
+                        <td>BETBRA</td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">Saldo necessário na BetBra = R$ ${valorOddLayPT.toFixed(2)}</td>
+                    </tr>
+                </table>
+                <br>
+                <p>GOLS +0 TIME 01 (BET365) / GOLS +0 TIME 2 (BET365)/ <span class="highlight-blue">BACK AMBAS MARCAM NÃO (BETBRA)</span> <strong>1º TEMPO</strong></p>
+                <table>
+                    <tr>
+                        <th>Valor da Aposta</th>
+                        <th>ODD</th>
+                        <th>Valor do Prêmio</th>
+                        <th>Plataforma</th>
+                        <th>Lucro/Prejuízo</th>
+                    </tr>
+                    <tr>
+                        <td>R$ ${maximoAposta.toFixed(2)}</td>
+                        <td>${oddMenorPT.toFixed(2)}</td>
+                        <td>R$ ${premioTotalPT.toFixed(2)}</td>
+                        <td>BET365</td>
+                        <td rowspan="3">R$ ${resultBackPT.toFixed(2)}</td>
+                    </tr>
+                    <tr>
+                        <td>R$ ${valorOddMaiorPT.toFixed(2)}</td>
+                        <td>${oddMaiorPT.toFixed(2)}</td>
+                        <td>R$ ${premioTotalPT.toFixed(2)}</td>
+                        <td>BET365</td>
+                    </tr>
+                    <tr>
+                        <td>R$ ${stakeBackPT.toFixed(2)}</td>
+                        <td>${oddBack.toFixed(2)}</td>
+                        <td>R$ ${premioTotalPT.toFixed(2)}</td>
+                        <td>BETBRA</td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">Saldo necessário na BetBra = R$ ${stakeBackPT.toFixed(2)}</td>
+                    </tr>
+                </table>
+                <br>
+                <p>GOLS +0 TIME 01 (BET365) / GOLS +0 TIME 2 (BET365)/ <span class="highlight-pink">LAY AMBAS MARCAM SIM (BETBRA)</span> <strong>2º TEMPO</strong></p>
+                <table>
+                    <tr>
+                        <th>Valor da Aposta</th>
+                        <th>ODD</th>
+                        <th>Valor do Prêmio</th>
+                        <th>Plataforma</th>
+                        <th>Lucro/Prejuízo</th>
+                    </tr>
+                    <tr>
+                        <td>R$ ${maximoAposta.toFixed(2)}</td>
+                        <td>${oddMenorST.toFixed(2)}</td>
+                        <td>R$ ${premioTotalST.toFixed(2)}</td>
+                        <td>BET365</td>
+                        <td rowspan="3">R$ ${resultLayST.toFixed(2)}</td>
+                    </tr>
+                    <tr>
+                        <td>R$ ${valorOddMaiorST.toFixed(2)}</td>
+                        <td>${oddMaiorST.toFixed(2)}</td>
+                        <td>R$ ${premioTotalST.toFixed(2)}</td>
+                        <td>BET365</td>
+                    </tr>
+                    <tr>
+                        <td>R$ ${stakeLayST.toFixed(2)}</td>
+                        <td>${oddLay.toFixed(2)}</td>
+                        <td>R$ ${premioTotalST.toFixed(2)}</td>
+                        <td>BETBRA</td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">Saldo necessário na BetBra = R$ ${valorOddLayST.toFixed(2)}</td>
+                    </tr>
+                </table>
+                <br>
+                <p>GOLS +0 TIME 01 (BET365) / GOLS +0 TIME 2 (BET365)/ <span class="highlight-blue">BACK AMBAS MARCAM NÃO (BETBRA)</span> <strong>2º TEMPO</strong></p>
+                <table>
+                    <tr>
+                        <th>Valor da Aposta</th>
+                        <th>ODD</th>
+                        <th>Valor do Prêmio</th>
+                        <th>Plataforma</th>
+                        <th>Lucro/Prejuízo</th>
+                    </tr>
+                    <tr>
+                        <td>R$ ${maximoAposta.toFixed(2)}</td>
+                        <td>${oddMenorST.toFixed(2)}</td>
+                        <td>R$ ${premioTotalST.toFixed(2)}</td>
+                        <td>BET365</td>
+                        <td rowspan="3">R$ ${resultBackST.toFixed(2)}</td>
+                    </tr>
+                    <tr>
+                        <td>R$ ${valorOddMaiorST.toFixed(2)}</td>
+                        <td>${oddMaiorST.toFixed(2)}</td>
+                        <td>R$ ${premioTotalST.toFixed(2)}</td>
+                        <td>BET365</td>
+                    </tr>
+                    <tr>
+                        <td>R$ ${stakeBackST.toFixed(2)}</td>
+                        <td>${oddBack.toFixed(2)}</td>
+                        <td>R$ ${premioTotalST.toFixed(2)}</td>
+                        <td>BETBRA</td>
+                    </tr>
+                    <tr>
+                        <td colspan="5">Saldo necessário na BetBra = R$ ${stakeBackST.toFixed(2)}</td>
+                    </tr>
+                </table>
+            `;
+        }
+    </script>
+</body>
+</html>
