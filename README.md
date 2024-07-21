@@ -1,0 +1,2 @@
+# betsegura
+Cálculo de Apostas
