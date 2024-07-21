@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <img src="BetSeguraLogo.png" alt="Betsegura" class="logo">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BETSEGURA v1.0</title>
@@ -9,11 +8,18 @@
         body {
             font-family: Arial, sans-serif;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
             background-color: #f0f0f0;
+        }
+
+        .logo {
+            width: 150px;
+            height: auto;
+            margin-bottom: 20px;
         }
 
         .login-container {
@@ -52,17 +58,12 @@
         .login-form button:hover {
             background-color: #0056b3;
         }
-
-        .logo {
-            width: 100px;
-            height: auto;
-            margin-bottom: 20px;
-        }
     </style>
 </head>
 <body>
+    <img src="BetSeguraLogo.png" alt="Betsegura" class="logo">
     <div class="login-container">
-        <h1>Login</h1>
+        <h1></h1>
         <form class="login-form" onsubmit="return login(event)">
             <input type="text" id="username" placeholder="Usuário" required>
             <input type="password" id="password" placeholder="Senha" required>
